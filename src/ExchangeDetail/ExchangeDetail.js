@@ -1,12 +1,14 @@
+import React from "react";
+
+import NavigationButton from "../Navigation/NavigationButton";
+
+import load from '../ExchangeLoader';
+
 class ExchangeDetail extends React.Component {
   constructor(props) {
     super(props);
-    const search = new URLSearchParams(location.search);
-    const page = search.has('page') && search.get('page') ? search.get('page') : 1;
 
     this.state = {
-      id: search.get('id'),
-      page: page,
       isLoaded: false,
       error: null,
       exchange: {},
@@ -18,7 +20,7 @@ class ExchangeDetail extends React.Component {
   }
 
   loadExchange(page) {
-    fetch(`https://api.coingecko.com/api/v3/exchanges/${this.state.id}`)
+    load(`https://api.coingecko.com/api/v3/exchanges/${this.props.exchangeId}`)
       .then(
         (result) => {
           this.setState({
@@ -36,18 +38,6 @@ class ExchangeDetail extends React.Component {
           });
         }
       )
-  }
-
-  backToMain() {
-    const url = new URL(location);
-    url.pathname = '/';
-    url.searchParams.forEach((value, key, sp) => { sp.delete(key); });
-
-    if (Number(this.state.page) !== 1) {
-      url.searchParams.set('page', this.state.page);
-    }
-
-    location.href = url.toString();
   }
 
   renderUrl(key, exchange) {
@@ -109,11 +99,9 @@ class ExchangeDetail extends React.Component {
       return (
         <div className="exchange-details">
           <div className="controls">
-            <button className="backToMain"
-              onClick={this.backToMain.bind(this)}
-            >
-            Back To Main
-            </button>
+            <NavigationButton className="backToMain" path="/" page={this.props.page}>
+              Back To Main
+            </NavigationButton>
           </div>
           <div className="info">
             <img src={exchange.image} />
@@ -131,5 +119,4 @@ class ExchangeDetail extends React.Component {
   }
 }
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<ExchangeDetail />);
+export default ExchangeDetail;

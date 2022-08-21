@@ -1,9 +1,9 @@
-// A slightly easer to use fetch() function. It handles
-// building the URL for us.
-function fetch(url, query = {}) {
+// Load the data from the server.  Handle all the boilerplate for xhr
+// correctly.
+function load(url, query = {}) {
   const requestUrl = new URL(url);
 
-  for (param in query) {
+  for (const param in query) {
     requestUrl.searchParams.set(param, query[param]);
   }
 
@@ -22,3 +22,5 @@ function fetch(url, query = {}) {
     xhr.send();
   });
 }
+
+export default load;
