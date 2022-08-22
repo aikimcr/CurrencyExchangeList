@@ -1,26 +1,20 @@
-import logo from './logo.svg';
 import './App.css';
+import { Routes, Route, useSearchParams } from 'react-router-dom';
 
-import './ExchangeDetail.js';
+import ExchangeListPage from './ExchangeList/ExchangeListPage';
+import ExchangeDetailPage from './ExchangeDetail/ExchangeDetailPage';
 
-function App() {
+function App(props) {
+  const [searchParams, setSearchParams] = useSearchParams();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path="/" element={
+        <ExchangeListPage search={searchParams.toString()} />
+      }></Route>
+      <Route path="exchange/:exchangeId" element={
+        <ExchangeDetailPage search={searchParams.toString()} />
+      }></Route>
+    </Routes>
   );
 }
 
