@@ -3,18 +3,13 @@ import '../Exchange.css';
 
 import ExchangeList from "./ExchangeList";
 
-import load from '../ExchangeLoader';
+import { load } from '../ExchangeLoader';
 
 class ExchangeListContainer extends React.Component {
   constructor(props) {
     super(props);
 
-    let startingPage = 1;
-    // const search = new URLSearchParams(location.search);
-    //
-    // if (search.has('page') && search.get('page') && !isNaN(search.get('page'))) {
-    //   startingPage = search.get('page');
-    // }
+    let startingPage = this.props.page;
 
     this.state = {
       page: startingPage,
@@ -29,6 +24,7 @@ class ExchangeListContainer extends React.Component {
   }
 
   loadExchanges(page) {
+    debugger;
     load('https://api.coingecko.com/api/v3/exchanges', {per_page: 10, page: page})
       .then(
         (result) => {
@@ -98,11 +94,13 @@ class ExchangeListContainer extends React.Component {
     } else {
       // TODO: The prevButton really should be hidden on page 1
       const prevButtonClass = this.state.page === 1 ? 'hidden' : 'prevButton';
+      const prevButtonToPage = this.state.page - 1;
+      cosnt nextButtonToPage = this.state.page + 1;
       return (
         <div className="list-container">
           <div className="controls">
-            <button className={prevButtonClass}
-              onClick={this.pageBack.bind(this)}>
+            <NavigationButton className={prevButtonClass} 
+
               Previous Page
             </button>
             <button className="nextButton"
