@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import '../Exchange.css';
 
 import ExchangeList from "./ExchangeList";
 
@@ -93,7 +94,7 @@ class ExchangeListContainer extends React.Component {
     if (error) {
       return <div className="message">Error: {error.message}</div>;
     } else if (!isLoaded) {
-      return <div className="message">Loading...</div>;
+      return <div className="message">Loading Page {this.state.page}...</div>;
     } else {
       // TODO: The prevButton really should be hidden on page 1
       const prevButtonClass = this.state.page === 1 ? 'hidden' : 'prevButton';

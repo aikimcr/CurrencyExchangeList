@@ -1,0 +1,92 @@
+body {
+  padding: 0;
+  font: 15px "Lucida Grande", Helvetica, Arial, sans-serif;
+  box-sizing: border-box; }
+
+a {
+  color: #00B7FF; }
+
+.hidden {
+  visibility: hidden; }
+
+.message {
+  font-size: 75px;
+  line-height: 75px; }
+
+.controls {
+  display: flex;
+  justify-content: space-between; }
+
+button {
+  font-size: 15px;
+  line-height: 15px; }
+
+.list-container {
+  height: 100%;
+  overflow: hidden; }
+  .list-container .list {
+    height: 100%;
+    overflow-y: scroll; }
+
+.exchange-list {
+  list-style-type: none;
+  overflow: hidden;
+  height: 1375px; }
+  .exchange-list li {
+    width: 100%;
+    height: 125px;
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    grid-template-rows: 60px 1fr;
+    margin: 10px 0; }
+    .exchange-list li .logo {
+      width: 50px;
+      height: 60px;
+      grid-column: 1;
+      grid-row: 1; }
+    .exchange-list li .info {
+      width: 100%;
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      padding-right: 10px; }
+      .exchange-list li .info div {
+        height: 25px;
+        width: calc(100% - 80px);
+        font-size: 15px;
+        line-height: 15px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap; }
+
+.exchange-details {
+  width: calc(100vw - 40px); }
+  .exchange-details .controls {
+    margin-bottom: 15px;
+    height: 25px; }
+  .exchange-details .info {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    grid-template-rows: 60px auto; }
+    .exchange-details .info img {
+      grid-column: 1; }
+    .exchange-details .info div {
+      grid-column: 2;
+      height: 25px;
+      width: calc(100% - 80px);
+      font-size: 15px;
+      line-height: 15px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap; }
+      .exchange-details .info div.description, .exchange-details .info div.socialMediaContainer {
+        height: 100%;
+        max-height: 300px;
+        overflow-y: scroll;
+        white-space: normal;
+        margin: 0 0 20px 0;
+        padding: 10px 10px 10px 0; }
+        .exchange-details .info div.description .social-media, .exchange-details .info div.socialMediaContainer .social-media {
+          height: 100%;
+          max-height: 300px;
+          width: 100%;
+          overflow: auto; }

@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import '../Exchange.css';
 
 import NavigationButton from "../Navigation/NavigationButton";
 

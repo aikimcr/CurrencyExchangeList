@@ -1,7 +1,7 @@
 import React from "react";
-import { BrowserRouter, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-function NavigationButtonHelper(props) {
+function NavigationButton(props) {
   const navigate = useNavigate();
 
   const handleClick = props.handleClick || function() {
@@ -10,14 +10,6 @@ function NavigationButtonHelper(props) {
   }
 
   return (<button onClick={handleClick}>{props.children}</button>);
-}
-
-function NavigationButton(props) {
-  return (
-    <BrowserRouter>
-      <NavigationButtonHelper state={props.state} path={props.path} children={props.children} handleClick={props.handleClick} />
-    </BrowserRouter>
-  )
 }
 
 export default NavigationButton;

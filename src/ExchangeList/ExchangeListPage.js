@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react';
+import '../Exchange.css';
 import { useParams } from 'react-router-dom';
 
 import ExchangeListContainer from "./ExchangeListContainer";
 
 function ExchangeListPage(props) {
-  debugger;
   const params = useParams();
 
   const page =  1;
