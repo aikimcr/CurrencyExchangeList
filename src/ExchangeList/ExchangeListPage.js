@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import '../Exchange.css';
+import '../Exchange.scss';
 import { useLocation } from 'react-router-dom';
 
 import ExchangeListContext from "./ExchangeListContext";
