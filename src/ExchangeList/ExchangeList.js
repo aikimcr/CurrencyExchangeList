@@ -31,7 +31,6 @@ class ExchangeList extends React.Component {
         <NavigationDiv className="trustRank" path={exchangePath} page={this.props.page} state={newState}>
           Trust Rank {exchange.trust_score_rank}
         </NavigationDiv>
-        <NavigationButton path={exchangePath} page={this.props.page} state={newState}>Show Details</NavigationButton>
       </li>
     )
   }

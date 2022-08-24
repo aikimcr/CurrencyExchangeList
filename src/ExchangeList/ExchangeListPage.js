@@ -1,14 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../Exchange.css';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
+import ExchangeListContext from "./ExchangeListContext";
 import ExchangeListContainer from "./ExchangeListContainer";
 
 function ExchangeListPage(props) {
-  const params = useParams();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const startingPage =  searchParams.has('page') ? Number(searchParams.get('page')) : 1;
 
-  const page =  1;
-  return <ExchangeListContainer page={page}/>
+  const [pageState, setPageState] = useState({page: startingPage});
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+
+    if (searchParams.has('page')) {
+      const newPage = Number(searchParams.get('page'));
+
+      if (newPage !== pageState.page) {
+        setPageState({page: newPage});
+      }
+    } else if (pageState.page !== 1) {
+      setPageState({page: 1});
+    }
+  }, [location, pageState.page]);
+
+  return (
+    <ExchangeListContext.Provider value={pageState}>
+      <ExchangeListContainer page={pageState.page} />
+    </ExchangeListContext.Provider>
+  );
 }
 
 export default ExchangeListPage;

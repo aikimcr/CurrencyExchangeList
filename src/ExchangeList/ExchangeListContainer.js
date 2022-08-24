@@ -1,18 +1,22 @@
 import React from 'react';
+
 import '../Exchange.css';
 
+import NavigationButton from "../Navigation/NavigationButton";
+
+import ExchangeListContext from "./ExchangeListContext";
 import ExchangeList from "./ExchangeList";
 
-import { load } from '../ExchangeLoader';
+import { loadList } from '../ExchangeLoader';
 
 class ExchangeListContainer extends React.Component {
   constructor(props) {
     super(props);
 
-    let startingPage = this.props.page;
+    let startingPage = this.props.page || 1;
 
     this.state = {
-      page: startingPage,
+      page: Number(startingPage),
       isLoaded: false,
       error: null,
       exchanges: [],
@@ -23,9 +27,23 @@ class ExchangeListContainer extends React.Component {
     this.loadExchanges(this.state.page);
   }
 
+  componentDidUpdate() {
+    if (Number(this.state.page) !== Number(this.context.page)) {
+      this.setState({
+        isLoaded: false,
+        page: Number(this.context.page),
+      });
+
+      this.loadExchanges(Number(this.context.page));
+    }
+
+    if (!this.state.isLoaded) {
+      this.loadExchanges(Number(this.state.page));
+    }
+  }
+
   loadExchanges(page) {
-    debugger;
-    load('https://api.coingecko.com/api/v3/exchanges', {per_page: 10, page: page})
+    loadList(page)
       .then(
         (result) => {
           this.setState({
@@ -45,44 +63,24 @@ class ExchangeListContainer extends React.Component {
       )
   }
 
-  pageForward() {
-    const newPage = Number(this.state.page) + 1;
+  pageForward(url, newState) {
+    this.context.page = Number(newState.page);
     this.setState({
-      page: newPage,
+      page: Number(newState.page),
       isLoaded: false,
       error: null,
       exchanges: [],
     });
-
-    // const newUrl = new URL(location);
-    // newUrl.searchParams.forEach((value, key, sp) => { sp.delete(key); });
-    //
-    // if (newPage && Number(newPage) !== 1) {
-    //   newUrl.searchParams.set('page', newPage);
-    // }
-    //
-    // location.href = newUrl.toString();
   }
 
-  pageBack() {
-    if (this.state.page > 1) {
-      const newPage = Number(this.state.page) - 1;
-      this.setState({
-        page: newPage,
-        isLoaded: false,
-        error: null,
-        exchanges: [],
-      });
-
-      // const newUrl = new URL(location);
-      // newUrl.searchParams.forEach((value, key, sp) => { sp.delete(key); });
-      //
-      // if (newPage && Number(newPage) !== 1) {
-      //   newUrl.searchParams.set('page', newPage);
-      // }
-      //
-      // location.href = newUrl.toString();
-    }
+  pageBack(url, newState) {
+    this.context.page = Number(newState.page)
+    this.setState({
+      page: Number(newState.page),
+      isLoaded: false,
+      error: null,
+      exchanges: [],
+    });
   }
 
   render() {
@@ -93,29 +91,39 @@ class ExchangeListContainer extends React.Component {
       return <div className="message">Loading Page {this.state.page}...</div>;
     } else {
       // TODO: The prevButton really should be hidden on page 1
-      const prevButtonClass = this.state.page === 1 ? 'hidden' : 'prevButton';
-      const prevButtonToPage = this.state.page - 1;
-      cosnt nextButtonToPage = this.state.page + 1;
+      const prevButtonClass = Number(this.state.page) === 1 ? 'hidden' : 'prevButton';
+      const prevButtonToPage = Math.max(0, Number(this.state.page) - 1);
+      const nextButtonToPage = Number(this.state.page) + 1;
+
       return (
         <div className="list-container">
+          <div className="header">
+            <div className="title">Currency Exchange List</div>
+            <div className="pageNumber">Page {this.state.page}</div>
+          </div>
           <div className="controls">
-            <NavigationButton className={prevButtonClass} 
-
+            <NavigationButton className={prevButtonClass}
+              searchParams={{page: prevButtonToPage}}
+              navigationHandler={this.pageBack.bind(this)}
+            >
               Previous Page
-            </button>
-            <button className="nextButton"
-              onClick={this.pageForward.bind(this)}>
+            </NavigationButton>
+            <NavigationButton className="nextButton"
+              searchParams={{page: nextButtonToPage}}
+              navigationHandler={this.pageForward.bind(this)}
+            >
               Next Page
-            </button>
+            </NavigationButton>
           </div>
 
           <div className="list">
-            <ExchangeList exchanges={this.state.exchanges} page={this.state.page}></ExchangeList>
+            <ExchangeList exchanges={exchanges} page={this.state.page}></ExchangeList>
           </div>
         </div>
       )
     }
   }
 }
+ExchangeListContainer.contextType = ExchangeListContext;
 
 export default ExchangeListContainer;

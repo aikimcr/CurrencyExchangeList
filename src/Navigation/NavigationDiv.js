@@ -1,15 +1,19 @@
+// This whole class may not be useful.  I should
+// use "Link" instead?  Maybe?
 import React from "react";
-import { BrowserRouter, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { buildDestination, buildHandler } from "./Navigator";
 
 function NavigationDiv(props) {
   const navigate = useNavigate();
+  const destination = buildDestination(props);
+  const handleClick = props.handleClick || buildHandler(navigate, props.navigationHandler);
 
-  const handleClick = props.handleClick || function() {
-    const newState = props.state || {};
-    navigate(props.path, {replace: false, state: newState});
+  function clickEvtHandler(evt) {
+    handleClick(destination, props.newState || {});
   }
 
-  return (<div onClick={handleClick}>{props.children}</div>);
+  return (<div className={props.className} onClick={clickEvtHandler}>{props.children}</div>);
 }
 
 export default NavigationDiv;
