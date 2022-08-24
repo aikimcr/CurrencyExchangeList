@@ -1,16 +1,15 @@
 // Load the data from the server.  Handle all the boilerplate for xhr
 // correctly.
 
-let testResolver = [];
+export const listUrl = 'https://api.coingecko.com/api/v3/exchanges';
+export const perPage = 10;
 
-function __load_test(url, query = {}) {
-  return new Promise((resolve, reject) => {
+export function load(url, query = {}) {
+  if (process.env.NODE_ENV === 'test') {
     debugger;
-    testResolver.push(resolve);
-  })
-}
+    return Promise.resolve([]);
+  }
 
-function __load(url, query = {}) {
   const requestUrl = new URL(url);
 
   for (const param in query) {
@@ -33,32 +32,17 @@ function __load(url, query = {}) {
   });
 }
 
-
-export function load(url, query) {
-  // I really hate this approach.  It feels like a security hole.
-  // But I can't get Jest to mock this module no matter what I try.
-  if (process.env.NODE_ENV === 'test') {
-    const p = __load_test(url, query);
-    return p;
-  } else {
-    return __load(url, query);
-  }
+export async function loadList(page) {
+  const result = await load(listUrl, {per_page: 10, page: page});
+  // This is going to need caching at some point.
+  return result;
 }
 
-export function __getTestResolver() {
-  if (!process.env.NODE_ENV === 'test') {
-    return null;
-  }
-
-  if (testResolver.length > 0) {
-    return testResolver.shift();
-  } else {
-    throw new Error("Not in a test?");
-  }
-}
-
-export function __resetTestResolver() {
-  testResolver = null;
+export async function loadDetail(exchangeId) {
+  const detailUrl = `${listUrl}/${exchangeId}`;
+  const result = await load(detailUrl, {});
+  // Again, caching is really needed here.
+  return result;
 }
 
 export default load;
