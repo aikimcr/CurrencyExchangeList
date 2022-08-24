@@ -1,0 +1,133 @@
+$logo-size: 50px;
+$logo-square: $logo-size + 10px;
+$standard-spacing: 15px;
+$overflow-spacing: $standard-spacing + 10px;
+$small-spacing: 10px;
+$large-spacing: 80px;
+
+body {
+  padding: 0;
+  font: 15px "Lucida Grande", Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.message {
+  font-size: 75px;
+  line-height: 75px;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+}
+
+button {
+  font-size: $standard-spacing;
+  line-height: $standard-spacing;
+}
+
+.list-container {
+  height: 100%;
+  overflow: hidden;
+
+  .list {
+    height: 100%;
+    overflow-y: scroll;
+  }
+}
+
+.exchange-list {
+  list-style-type: none;
+  overflow: hidden;
+
+  // line height * number of lines per element * one more than
+  // the number of elements to make sure we show all of the last element
+  height: ($overflow-spacing * 5 * 11);
+
+  li {
+    width: 100%;
+    height: $overflow-spacing * 5;
+    display: grid;
+    grid-template-columns: $logo-square 1fr;
+    grid-template-rows: $logo-square 1fr;
+    margin: $small-spacing 0;
+
+    .logo {
+      width: $logo-size;
+      height: $logo-size + 10px;
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .info {
+      width: 100%;
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      padding-right: $small-spacing;
+
+      div {
+        height: $overflow-spacing;
+        width: calc(100% - #{$large-spacing});
+        font-size: $standard-spacing;
+        line-height: $standard-spacing;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+}
+
+.exchange-details {
+  width: calc(100vw - 40px);
+
+  .controls {
+    margin-bottom: $standard-spacing;
+    height: $overflow-spacing;
+  }
+
+  .info {
+    display: grid;
+    grid-template-columns: $logo-square 1fr;
+    grid-template-rows: $logo-square auto;
+
+    img {
+      grid-column: 1;
+    }
+
+    div {
+      grid-column: 2;
+      height: $overflow-spacing;
+      width: calc(100% - #{$large-spacing});
+      font-size: $standard-spacing;
+      line-height: $standard-spacing;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      &.description, &.socialMediaContainer {
+        height: 100%;
+        max-height: $standard-spacing * 20;
+        overflow-y: scroll;
+        white-space: normal;
+        margin: 0 0 20px 0;
+        padding: 10px 10px 10px 0;
+
+        .social-media {
+          height: 100%;
+          max-height: $standard-spacing * 20;
+          width: 100%;
+          overflow: auto;
+        }
+      }
+    }
+  }
+}
