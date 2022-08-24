@@ -1,6 +1,6 @@
 import React from 'react';
 
-import '../Exchange.css';
+import '../Exchange.scss';
 
 import NavigationButton from "../Navigation/NavigationButton";
 

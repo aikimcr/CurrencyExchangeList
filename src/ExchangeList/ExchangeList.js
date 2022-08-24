@@ -1,6 +1,6 @@
 import React from 'react';
 
-import '../Exchange.css';
+import '../Exchange.scss';
 
 import NavigationButton from "../Navigation/NavigationButton";
 import NavigationDiv from "../Navigation/NavigationDiv";
@@ -19,18 +19,20 @@ class ExchangeList extends React.Component {
         <NavigationDiv className="logo" path={exchangePath} page={this.props.page} state={newState}>
           <img src={exchange.image} />
         </NavigationDiv>
-        <NavigationDiv className="info" path={exchangePath} page={this.props.page} state={newState}>
-            {exchange.name}
-        </NavigationDiv>
-        <NavigationDiv className="country" path={exchangePath} page={this.props.page} state={newState}>
-          {exchange.country}
-        </NavigationDiv>
-        <NavigationDiv className="url" path={exchangePath} page={this.props.page} state={newState}>
-          <a href={exchange.url} target="_blank">{exchange.url}</a>
-        </NavigationDiv>
-        <NavigationDiv className="trustRank" path={exchangePath} page={this.props.page} state={newState}>
-          Trust Rank {exchange.trust_score_rank}
-        </NavigationDiv>
+        <div className="info">
+          <NavigationDiv className="name" path={exchangePath} page={this.props.page} state={newState}>
+              {exchange.name}
+          </NavigationDiv>
+          <NavigationDiv className="country" path={exchangePath} page={this.props.page} state={newState}>
+            {exchange.country}
+          </NavigationDiv>
+          <NavigationDiv className="url" path={exchangePath} page={this.props.page} state={newState}>
+            <a href={exchange.url} target="_blank">{exchange.url}</a>
+          </NavigationDiv>
+          <NavigationDiv className="trustRank" path={exchangePath} page={this.props.page} state={newState}>
+            Trust Rank {exchange.trust_score_rank}
+          </NavigationDiv>
+        </div>
       </li>
     )
   }
