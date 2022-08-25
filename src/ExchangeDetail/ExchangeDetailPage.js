@@ -1,13 +1,17 @@
 import React from "react";
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 
+import ExchangeDetailContext from "./ExchangeDetailContext";
 import ExchangeDetail from "./ExchangeDetail";
 
 function ExchangeDetailPage(props) {
-  debugger;
-  const page = 1;
+  const { state } = useLocation();
   const { exchangeId } = useParams();
-  return <ExchangeDetail page={page} exchangeId={exchangeId}/>
+  return (
+    <ExchangeDetailContext.Provider value={state}>
+      <ExchangeDetail exchangeId={exchangeId}/>
+    </ExchangeDetailContext.Provider>
+  )
 }
 
 export default ExchangeDetailPage;

@@ -1,5 +1,5 @@
 import { BrowserRouter } from 'react-router-dom';
-import { act, render, waitFor, screen } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 
 import { loadList } from "../ExchangeLoader";
 

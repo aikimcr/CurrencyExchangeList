@@ -1,9 +1,11 @@
 import React from 'react';
 import '../Exchange.scss';
 
+import ExchangeDetailContext from "./ExchangeDetailContext";
 import NavigationButton from "../Navigation/NavigationButton";
+import ShowUrl from "../Navigation/ShowUrl";
 
-import load from '../ExchangeLoader';
+import { loadDetail } from '../ExchangeLoader';
 
 class ExchangeDetail extends React.Component {
   constructor(props) {
@@ -17,11 +19,11 @@ class ExchangeDetail extends React.Component {
   }
 
   componentDidMount() {
-    this.loadExchange();
+    this.loadExchange(this.props.exchangeId);
   }
 
-  loadExchange(page) {
-    load(`https://api.coingecko.com/api/v3/exchanges/${this.props.exchangeId}`)
+  loadExchange(exchangeId) {
+    loadDetail(exchangeId)
       .then(
         (result) => {
           this.setState({
@@ -51,7 +53,7 @@ class ExchangeDetail extends React.Component {
 
     return (
       <div key={key}>
-        <a href={exchange[key]} target="_blank">{serviceName}</a>
+        <ShowUrl url={exchange[key]} description={serviceName} />
       </div>
     )
   }
@@ -60,14 +62,12 @@ class ExchangeDetail extends React.Component {
     if (exchange.twitter_handle && exchange.twitter_handle.length > 0) {
       const url = `https://twitter.com/${exchange.twitter_handle}`;
       return (
-        <div>
-          <a href={url} target="_blank">Twitter</a>
+        <div key={`twitter_${exchange.twitter_handle}`}>
+          <ShowUrl url={url} description="Twitter" />
         </div>
       )
     } else {
-      return (
-        <div></div>
-      )
+      return ('')
     }
   }
 
@@ -89,7 +89,7 @@ class ExchangeDetail extends React.Component {
     if (error) {
       return <div className="message">Error: {error.message}</div>;
     } else if (!isLoaded) {
-      return <div className="message">Loading...</div>;
+      return <div className="message">Loading Exchange '{this.props.exchangeId}'...</div>;
     } else {
       const currentDate = new Date();
       const currentYear = currentDate.getFullYear();
@@ -99,16 +99,23 @@ class ExchangeDetail extends React.Component {
       // TODO: These will need labels
       return (
         <div className="exchange-details">
+          <div className="header">
+            <div className="title">Details for Exchange {exchange.name}</div>
+          </div>
           <div className="controls">
-            <NavigationButton className="backToMain" path="/" page={this.props.page}>
+            <NavigationButton className="backToMain"
+              path="/"
+              searchParams={{page: this.context.page}}
+              state={{page: this.context.page}}
+            >
               Back To Main
             </NavigationButton>
           </div>
           <div className="info">
-            <img src={exchange.image} />
+            <div className="logo"><img src={exchange.image} alt="logo" /></div>
             <div>{exchange.name}</div>
             <div>{exchange.country}</div>
-            <div className="url"><a href={exchange.url} target="_blank">{exchange.url}</a></div>
+            <div className="url"><ShowUrl url={exchange.url} /></div>
             <div><span>Trust Rank</span> <span>{exchange.trust_score_rank}</span></div>
             <div>{`Established ${yearsEstablished} years (${yearEstablished})`}</div>
             <div className="description">{exchange.description}</div>
@@ -119,5 +126,6 @@ class ExchangeDetail extends React.Component {
     }
   }
 }
+ExchangeDetail.contextType = ExchangeDetailContext;
 
 export default ExchangeDetail;

@@ -10,6 +10,7 @@ function ExchangeListPage(props) {
   const searchParams = new URLSearchParams(location.search);
   const startingPage =  searchParams.has('page') ? Number(searchParams.get('page')) : 1;
 
+  // TODO: Don't add the searchParams if page === 1
   const [pageState, setPageState] = useState({page: startingPage});
 
   useEffect(() => {

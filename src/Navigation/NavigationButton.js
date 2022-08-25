@@ -10,7 +10,7 @@ function NavigationButton(props) {
   const handleClick = props.handleClick || buildHandler(navigate, props.navigationHandler);
 
   function clickEvtHandler(evt) {
-    handleClick(destination, props.newState || {});
+    handleClick(destination, props.state || {});
   }
 
   return (<button className={props.className} onClick={clickEvtHandler}>{props.children}</button>);
