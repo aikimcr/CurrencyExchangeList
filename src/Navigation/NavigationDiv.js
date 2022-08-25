@@ -10,7 +10,7 @@ function NavigationDiv(props) {
   const handleClick = props.handleClick || buildHandler(navigate, props.navigationHandler);
 
   function clickEvtHandler(evt) {
-    handleClick(destination, props.newState || {});
+    handleClick(destination, props.state || {});
   }
 
   return (<div className={props.className} onClick={clickEvtHandler}>{props.children}</div>);

@@ -1,7 +1,9 @@
-import { render } from '@testing-library/react';
 import { BrowserRouter, useParams } from 'react-router-dom';
+import { render } from '@testing-library/react';
+import casual from 'casual';
 
 let mockLocation = null;
+let mockParams = null;
 let mockResolver = null;
 let mockPromise = null;
 
@@ -14,6 +16,9 @@ jest.mock('react-router-dom', () => {
     useLocation: () => {
       return mockLocation;
     },
+    useParams: () => {
+      return mockParams;
+    },
   }
 });
 
@@ -23,22 +28,25 @@ jest.mock('../ExchangeLoader', () => {
   return {
     __esModule: true,
     ...originalModule,
-    loadList: async () => {
+    loadDetail: async () => {
       return mockPromise;
     },
   };
 });
 
-import ExchangeListPage from "./ExchangeListPage";
+import ExchangeDetailPage from "./ExchangeDetailPage";
 
 beforeEach(() => {
+  const exchangeId = casual.word;
   mockLocation = {
     hash: '',
     key: 'default',
-    pathname: '/',
+    pathname: `/exchange/${exchangeId}`,
     search: '',
-    state: null,
+    state: {page: 1, exchangeId: exchangeId},
   };
+
+  mockParams = {exchangeId};
 
   mockPromise = new Promise((resolve, reject) => {
     mockResolver = resolve;
@@ -47,41 +55,23 @@ beforeEach(() => {
 
 afterEach(() => {
   mockLocation = null;
+  mockParams = null;
   mockPromise = null;
   mockResolver = null;
 })
 
-it("renders page 1 by default", () => {
+it("renders an exchange", () => {
   // Wrap the render in BrowserRouter to allow the use of react_router_dom hooks.
   const result = render(
     <BrowserRouter>
-      <ExchangeListPage />
+      <ExchangeDetailPage />
     </BrowserRouter>
   );
 
   const page = result.container.querySelector('div');
   // The container won't show any data right away, but that's okay.
-  // This way we can be sure the page number is being passed correctly.
+  // This way we can be sure the exchange id is being passed correctly.
   expect(page.className).toBe('message');
-  expect(page.textContent).toBe('Loading Page 1...');
+  expect(page.textContent).toBe(`Loading Exchange '${mockParams.exchangeId}'...`);
   expect(page.childElementCount).toBe(0);
-})
-
-it("renders page 2 when specified", () => {
-  mockLocation.search = 'page=2';
-
-  // Wrap the render in BrowserRouter to allow the use of useNavigate.
-  const result = render(
-    <BrowserRouter>
-      <ExchangeListPage />
-    </BrowserRouter>
-  );
-
-  const page = result.container.querySelector('div');
-  // The container won't show any data right away, but that's okay.
-  // This way we can be sure the page number is being passed correctly.
-  expect(page.className).toBe('message');
-  expect(page.textContent).toBe('Loading Page 2...');
-  expect(page.childElementCount).toBe(0);
-
 })

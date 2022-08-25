@@ -138,11 +138,11 @@ button {
     grid-template-columns: $logo-square 1fr;
     grid-template-rows: $logo-square auto;
 
-    img {
+    div.logo {
       grid-column: 1;
     }
 
-    div {
+    div:not(.logo) {
       grid-column: 2;
       height: $overflow-spacing;
       width: calc(100% - #{$large-spacing});
