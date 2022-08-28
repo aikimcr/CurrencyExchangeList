@@ -23,6 +23,19 @@ class ExchangeListContainer extends React.Component {
     }
   }
 
+  static getDerivedStateFromError(error) {
+    return {
+      page: 1,
+      isLoaded: false,
+      error: error,
+      exchanges: [],
+    }
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.log(error, errorInfo);
+  }
+
   componentDidMount() {
     this.loadExchanges(this.state.page);
   }

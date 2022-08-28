@@ -3,17 +3,19 @@ import { Routes, Route } from 'react-router-dom';
 
 import ExchangeListPage from './ExchangeList/ExchangeListPage';
 import ExchangeDetailPage from './ExchangeDetail/ExchangeDetailPage';
+import ErrorBoundary from "./ErrorBoundary";
+
 
 function App(props) {
   return (
-    <Routes>
-      <Route path="/" element={
-        <ExchangeListPage />
-      }></Route>
-      <Route path="exchange/:exchangeId" element={
-        <ExchangeDetailPage />
-      }></Route>
-    </Routes>
+    <div>
+      <ErrorBoundary>
+        <Routes>
+          <Route path="/" element={<ExchangeListPage />} />
+          <Route path="exchange/:exchangeId" element={<ExchangeDetailPage />} />
+        </Routes>
+      </ErrorBoundary>
+    </div>
   );
 }
 

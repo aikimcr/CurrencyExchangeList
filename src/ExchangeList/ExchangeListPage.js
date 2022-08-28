@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 
 import ExchangeListContext from "./ExchangeListContext";
 import ExchangeListContainer from "./ExchangeListContainer";
+import ErrorBoundary from "../ErrorBoundary";
 
 function ExchangeListPage(props) {
   const location = useLocation();
@@ -29,7 +30,9 @@ function ExchangeListPage(props) {
 
   return (
     <ExchangeListContext.Provider value={pageState}>
-      <ExchangeListContainer page={pageState.page} />
+      <ErrorBoundary>
+        <ExchangeListContainer page={pageState.page} />
+      </ErrorBoundary>
     </ExchangeListContext.Provider>
   );
 }

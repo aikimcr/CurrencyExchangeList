@@ -18,6 +18,18 @@ class ExchangeDetail extends React.Component {
     }
   }
 
+  static getDerivedStateFromError(error) {
+    return {
+      isLoaded: false,
+      error: error,
+      exchange: {},
+    }
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.log(error, errorInfo);
+  }
+
   componentDidMount() {
     this.loadExchange(this.props.exchangeId);
   }
